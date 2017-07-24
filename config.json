@@ -1,0 +1,11 @@
+{
+  "hostname": "0.0.0.0",
+  "port": "8001",
+  "projects": [
+    {
+      "url": "/test",
+      "cwd": "./test/",
+      "script": "./test/build.sh"
+    }
+  ]
+}
