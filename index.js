@@ -1,3 +1,5 @@
+'use strict';
+
 const http = require('http');
 const exec = require('child_process').exec;
 const config = require('./config.json');
