@@ -1,8 +1,8 @@
 # 多项目 webhooks 服务
 
-* 通过配置为多个项目设置 webhook，
-* 运行`npm start`
-* 建议搭配 pm2 使用 `pm2 start index.js --watch --name 'webhooks-server'`
+* 通过简单配置为多个项目设置 webhook，
+* 运行`npm start`或`node index.js`
+* 建议搭配 pm2 使服务持久运行 `pm2 start index.js --watch --name 'webhooks-server'`
 
 ## 配置说明
 config.json
@@ -22,23 +22,23 @@ config.json
 
 ## 服务器设置
 
-1. 使用 nginx 反向代理到内网 （不占用新端口，推荐）
-webhook 地址为 `http://youdomain.com/test-hook`  
-
-编辑 `/etc/nginx/conf.d/yousite.conf` 文件，增加如下规则
+### 1. 使用 nginx 反向代理到内网 （不占用新端口，推荐）  
+* webhook 地址为 `http://youdomain.com/test-hook`  
+* 编辑 `/etc/nginx/conf.d/yousite.conf` 文件，增加如下规则
 ```
 location /test-hook {
-		proxy_pass http://127.0.0.1:8001/test-hook;
+    proxy_pass http://127.0.0.1:8001/test-hook;
 }
 ```
+* 执行`nginx -s reload`，重启 nginx 生效
 
-2. 使用指定端口直接访问
-webhook 地址为 `http://youdomain.com:8001/test-hook`
-* 检查要用的端口是否打开
-有安全组的服务器，需要添加规则如`允许 TCP：8001`
+### 2. 使用指定端口直接访问（需要安全组、防火墙设置经验）
+* webhook 地址为 `http://youdomain.com:8001/test-hook`
+* 检查要用的端口是否打开  
+有安全组的服务器，需要添加规则如`允许 TCP：8001`  
 需要检查防火墙状态，如果是开启状态，需要添加规则
 
-* 测试端口是否打开
-在服务器上运行 webhooks-server，运行`netstat -ntlp`可看到端口监听状态
-然后在本机上运行 `telnet IP PORT`，如果回应中有`connected`，则表示端口可以访问
+* 测试端口是否打开  
+服务器运行 webhooks-server 后，执行`netstat -ntlp`可看到端口监听状态  
+然后在本机上执行 `telnet IP PORT`，如果回应中有`connected`，则表示端口可以访问
 
